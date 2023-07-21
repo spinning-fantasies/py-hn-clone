@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hacker News Clone</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <nav class="navbar is-info">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{{ url_for('home') }}">
+                    <strong>Hacker News Clone</strong>
+                </a>
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <!-- Add any additional navbar items here -->
+                </div>
+
+                <div class="navbar-end">
+                    {% if 'user_id' in session %}
+                    <div class="navbar-item">
+                        <p>Welcome, User!</p>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="button is-danger" href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                    {% else %}
+                    <div class="navbar-item">
+                        <a class="button is-primary" href="{{ url_for('login') }}">Login</a>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="button is-light" href="{{ url_for('register') }}">Register</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero is-info is-bold">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    Hacker News Clone
+                </h1>
+                <h2 class="subtitle">
+                    A simple Hacker News clone using Flask and Bulma.
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <br>
+        <h2 class="title is-4">Latest Posts</h2>
+        <hr>
+
+        {% for post in posts %}
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{ post.title }}</strong>
+                            <br>
+                            {{ post.content }}
+                            <br>
+                            <small class="has-text-grey-light">Posted by {{ post.user_id }} on {{ post.created_at }}</small>
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Comment Section -->
+            <div class="box">
+                <h3 class="subtitle">Comments</h3>
+                {% for comment in post.comments %}
+                <div class="content">
+                    <p>
+                        {{ comment.text }}
+                        <br>
+                        <small class="has-text-grey-light">Commented by {{ comment.user_id }} on {{ comment.created_at }}</small>
+                    </p>
+                </div>
+                {% endfor %}
+                {% if 'user_id' in session %}
+                <form method="post" action="{{ url_for('add_comment', post_id=post.id) }}">
+                    <div class="field">
+                        <div class="control">
+                            <textarea class="textarea" name="comment_text" placeholder="Add a comment..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class="button is-info">Add Comment</button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="box">
+            {% if 'user_id' in session %}
+            <h3 class="subtitle">Create a New Post</h3>
+            <form method="post" action="{{ url_for('create_post') }}">
+                <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                        <input class="input" type="text" name="post_title" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Content</label>
+                    <div class="control">
+                        <textarea class="textarea" name="post_content" required></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Submit Post</button>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <p>You must be logged in to create a new post. <a href="{{ url_for('login') }}">Login here</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

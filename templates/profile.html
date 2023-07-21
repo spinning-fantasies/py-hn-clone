@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile - Hacker News Clone</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <nav class="navbar is-info">
+        <!-- ... (navbar code) ... -->
+    </nav>
+
+    <section class="hero is-info is-bold">
+        <!-- ... (hero section code) ... -->
+    </section>
+
+    <div class="container">
+        <br>
+        {% if 'user_id' in session %}
+        <h2 class="title is-4">User Profile</h2>
+        <hr>
+
+        <div class="box">
+            <h3 class="subtitle">Username: {{ user.username }}</h3>
+            <h3 class="subtitle">Email: {{ user.email }}</h3>
+            <h3 class="subtitle">Registration Date: {{ user.created_at }}</h3>
+        </div>
+
+        <!-- Add any additional user profile information here -->
+        {% endif %}
+    </div>
+</body>
+</html>

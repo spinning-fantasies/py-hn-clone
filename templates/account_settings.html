@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Settings - Hacker News Clone</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <nav class="navbar is-info">
+        <!-- ... (navbar code) ... -->
+    </nav>
+
+    <section class="hero is-info is-bold">
+        <!-- ... (hero section code) ... -->
+    </section>
+
+    <div class="container">
+        <br>
+        {% if 'user_id' in session %}
+        <h2 class="title is-4">Account Settings</h2>
+        <hr>
+
+        <div class="box">
+            <form method="post" action="{{ url_for('account_settings') }}">
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                        <input class="input" type="text" name="new_username" value="{{ user.username }}" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input class="input" type="password" name="new_password" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Update Profile</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
